@@ -3,7 +3,7 @@ import numpy as np
 
 class Game(object):
 
-        def __init__(self, player, funds=100):	
+        def __init__(self, player, funds):	
                 self.dealer = Dealer()
                 self.player = Player(player, funds)
                 self.deck = Deck()
@@ -36,14 +36,17 @@ class Game(object):
                  
             if self.deck.total_up(dealer) == 21:
                 if self.deck.total_up(player) != 21:
-                    self.player.score = -1                    
+                    self.player.score = -1
+                    print('Dealer has a Blackjack')
                 else:
-                    self.player.score = 0                  
+                    self.player.score = 0 
+                return self.player.score   
                  
             else:
                 if self.deck.total_up(player) == 21:
                     self.player.score = 1
-                
+                    print('{} has a Blackjack'.format(self.player.name))
+                    return self.player.score                
                 else:
                     while(self.player.choice() and self.deck.total_up(player)<21):
                         self.deal_card(self.player)
@@ -51,26 +54,32 @@ class Game(object):
                         print(self)    
                         if self.deck.total_up(player) > 21:
                             self.player.score = -1                        
-                            break
+                            return self.player.score 
                         if False:
                             break
-            while self.deck.total_up(dealer) < 17:
-                self.deal_card(self.dealer)
-                print()
-                print(self) 
+                while self.deck.total_up(dealer) < 17:
+                        self.deal_card(self.dealer)
+                        print()
+                        print(self) 
             
             if self.deck.total_up(dealer) > 21 and self.deck.total_up(player) <= 21:
                 if self.player.score != -1:
-                    self.player.score = 1                      
+                    self.player.score = 1
+                    return self.player.score 
             else:
                 if self.deck.total_up(player) > self.deck.total_up(dealer):
                     if self.deck.total_up(player) <= 21:
-                        self.player.score = 1                         
+                        self.player.score = 1
+                        return self.player.score 
                     elif self.deck.total_up(player) == self.deck.total_up(dealer):
-                        self.player.score = 0                  
+                        self.player.score = 0
+                        return self.player.score
+                    elif self.deck.total_up(player) < self.deck.total_up(dealer):
+                        self.player.score = -1
+                        return self.player.score    
                     else:
                         self.player.score = -1
-            return self.player.score          
+                        return self.player.score          
 				
         def check_winner(self):
                 self.calc(self.dealer,self.player)          
@@ -210,7 +219,8 @@ class Deck(object):
 def main():
 
     player_name = input("Welcome to the casino!  What's your name? ")
-    Game(player_name)
+    player_funds = int(input("How much money do you have? "))
+    Game(player_name, player_funds)
 
 
 if __name__ == '__main__':
