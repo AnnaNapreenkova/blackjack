@@ -38,12 +38,13 @@ class Game(object):
                 if self.deck.total_up(player) != 21:
                     self.player.score = -1                    
                 else:
-                    self.player.score = 0                  
+                    self.player.score = 0 
+                return self.player.score   
                  
             else:
                 if self.deck.total_up(player) == 21:
                     self.player.score = 1
-                
+                    return self.player.score                
                 else:
                     while(self.player.choice() and self.deck.total_up(player)<21):
                         self.deal_card(self.player)
@@ -51,26 +52,32 @@ class Game(object):
                         print(self)    
                         if self.deck.total_up(player) > 21:
                             self.player.score = -1                        
-                            break
+                            return self.player.score 
                         if False:
                             break
-            while self.deck.total_up(dealer) < 17:
-                self.deal_card(self.dealer)
-                print()
-                print(self) 
+                while self.deck.total_up(dealer) < 17:
+                        self.deal_card(self.dealer)
+                        print()
+                        print(self) 
             
             if self.deck.total_up(dealer) > 21 and self.deck.total_up(player) <= 21:
                 if self.player.score != -1:
-                    self.player.score = 1                      
+                    self.player.score = 1
+                    return self.player.score 
             else:
                 if self.deck.total_up(player) > self.deck.total_up(dealer):
                     if self.deck.total_up(player) <= 21:
-                        self.player.score = 1                         
+                        self.player.score = 1
+                        return self.player.score 
                     elif self.deck.total_up(player) == self.deck.total_up(dealer):
-                        self.player.score = 0                  
+                        self.player.score = 0
+                        return self.player.score
+                    elif self.deck.total_up(player) < self.deck.total_up(dealer):
+                        self.player.score = -1
+                        return self.player.score    
                     else:
                         self.player.score = -1
-            return self.player.score          
+                        return self.player.score          
 				
         def check_winner(self):
                 self.calc(self.dealer,self.player)          
