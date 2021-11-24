@@ -5,7 +5,7 @@ class Game(object):
 
         def __init__(self, player, funds):	
                 self.dealer = Dealer()
-                self.player = Player(player, funds)
+                self.player = Player(player, funds) ##TODO: добавить игроков
                 self.deck = Deck()
 
                 self.setup()
@@ -57,10 +57,10 @@ class Game(object):
                             return self.player.score 
                         if False:
                             break
-                while self.deck.total_up(dealer) < 17:
-                        self.deal_card(self.dealer)
-                        print()
-                        print(self) 
+            while self.deck.total_up(dealer) < 17:
+                    self.deal_card(self.dealer)
+                    print()
+                    print(self) 
             
             if self.deck.total_up(dealer) > 21 and self.deck.total_up(player) <= 21:
                 if self.player.score != -1:
@@ -69,17 +69,14 @@ class Game(object):
             else:
                 if self.deck.total_up(player) > self.deck.total_up(dealer):
                     if self.deck.total_up(player) <= 21:
-                        self.player.score = 1
-                        return self.player.score 
+                        self.player.score = 1                        
                     elif self.deck.total_up(player) == self.deck.total_up(dealer):
-                        self.player.score = 0
-                        return self.player.score
+                        self.player.score = 0                        
                     elif self.deck.total_up(player) < self.deck.total_up(dealer):
-                        self.player.score = -1
-                        return self.player.score    
+                        self.player.score = -1                            
                     else:
                         self.player.score = -1
-                        return self.player.score          
+                    return self.player.score          
 				
         def check_winner(self):
                 self.calc(self.dealer,self.player)          
